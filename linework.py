@@ -19,43 +19,40 @@ screen.fill("black")
 pygame.display.flip()
 
 # title and icon
-pygame.display.set_caption("Bokeh")
-icon = pygame.image.load('icons/bokeh-icon.jpg')
+pygame.display.set_caption("Line Work")
+icon = pygame.image.load('icons/RandomLines.png')
 pygame.display.set_icon(icon)
-## LICENCING INFO
-# the icon for bokeh.py was sourced from https://en.wikipedia.org/wiki/Bokeh#/media/File:Bokeh_Example.jpg
-# it is made by JWCreations and licenced under CC BY-SA 3.0
-# its original name was "Bokeh Example.jpg"
-## LICENCING INFO
 
 pygame.font.init()
 mainfont = pygame.font.Font('freesansbold.ttf', 32)
 
-circlecount = 200
+clearprev = True
+
+linecount = 200
 minradius = 1
 maxradius = 20
-circles = []
+lines = []
 
 
 def generate():
-    global circles
-    global circlecount
+    global lines
+    global linecount
     global maxradius
-    circles.clear()
-    for i in range(circlecount):
-        randomXY = randint(0, windratio[0]), randint(0, windratio[1])
+    lines.clear()
+    for i in range(linecount):
+        randomXYXY = (randint(0, windratio[0]), randint(0, windratio[1])), (randint(0, windratio[0]), randint(0, windratio[1]))
         randomcolor = randint(0, 255), randint(0, 255), randint(0, 255)
-        circles.append((randomcolor, randomXY, randint(minradius, maxradius)))
+        lines.append((randomcolor, randomXYXY, randint(minradius, maxradius)))
 
-def drawcircles():
-    global circles
-    for circle in circles: pygame.draw.circle(screen, circle[0], circle[1], circle[2])
+def drawlines():
+    global lines
+    for line in lines: pygame.draw.line(screen, line[0], line[1][0], line[1][1], line[2])
 
 
 generate()
 running = True
 while running:
-    screen.fill((0, 0, 0))  # background
+    if clearprev: screen.fill((0, 0, 0))  # background
     # pygame.QUIT event means the user clicked X to close your window
     for event in pygame.event.get():
         if event.type == pygame.QUIT: running = False
@@ -66,6 +63,6 @@ while running:
                 if event.key == pygame.K_r: generate()
 
 
-    drawcircles()
+    drawlines()
 
     pygame.display.update()

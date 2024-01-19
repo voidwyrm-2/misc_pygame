@@ -1,5 +1,7 @@
 # misc_pygame
-A bunch of random scripts I created using python pygame
+ A bunch of random scripts I made using python pygame
+
+ #### *If I do not give a source for an image/piece of art, I made it*
 
 ## bokeh.py
 Creates a bunch of randomly colored circles
@@ -15,3 +17,6 @@ Its original name was "Bokeh Example.jpg"
 
 ## screensaver.py
 Creates a bunch of randomly colored circles that bounce around the screen(I love collison math)
+
+## linework.py
+Creates a bunch of randomly colored lines
