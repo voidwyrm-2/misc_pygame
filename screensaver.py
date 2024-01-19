@@ -32,6 +32,7 @@ shapesPoly = 'squares'
 #1 or squares(NOT WORKING)
 #1.1 or fsquares: funny squares
 #1.2 or frsquares: funnier squares
+#2 or hexagons: hexagons are the bestagons
 
 oneRadius = False
 defRadius = 10
