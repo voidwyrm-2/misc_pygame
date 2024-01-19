@@ -21,8 +21,8 @@ clock = pygame.time.Clock()
 
 # title and icon
 pygame.display.set_caption("Rhythm Game")
-#icon = pygame.image.load('icons/.png')
-#pygame.display.set_icon(icon)
+icon = pygame.image.load('icons/RhythmGame-icon.png')
+pygame.display.set_icon(icon)
 
 pygame.font.init()
 mainfont = pygame.font.Font('freesansbold.ttf', 32)
