@@ -27,7 +27,7 @@ mainfont = pygame.font.Font('freesansbold.ttf', 32)
 gameticks = 0
 showTicks = False
 
-shapesPoly = 'squares'
+shapesPoly = 0
 #0 or circles
 #1 or squares(NOT WORKING)
 #1.1 or fsquares: funny squares

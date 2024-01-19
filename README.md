@@ -20,3 +20,6 @@ Creates a bunch of randomly colored circles that bounce around the screen(I love
 
 ## linework.py
 Creates a bunch of randomly colored lines
+
+## rhythmgame.py
+Basic rhythm game
