@@ -1,11 +1,4 @@
 import pygame
-from random import randint
-
-
-
-def limit(input, max):
-    if input > max: return max
-    return input
 
 
 

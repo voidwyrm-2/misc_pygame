@@ -3,6 +3,9 @@ from random import randint
 from common import *
 
 
+def work(): 'makes the code work'
+
+
 
 # initialize game
 pygame.init()
@@ -13,9 +16,9 @@ screen = pygame.display.set_mode(windratio)  # passing width and height
 screen.fill("black")
 pygame.display.flip()
 # title and icon
-pygame.display.set_caption("Physim")
-icon = pygame.image.load('icons/Physgun.png')
-pygame.display.set_icon(icon)
+pygame.display.set_caption("GrabbyMoose")
+#icon = pygame.image.load('icons/Physgun.png')
+#pygame.display.set_icon(icon)
 clock = pygame.time.Clock()
 
 pygame.font.init()
@@ -25,8 +28,6 @@ mainfont = pygame.font.Font('freesansbold.ttf', 32)
 shouldTheCodeWork = True
 
 isFirstMousebound = False
-
-gravity = 0.5
 
 gameticks = 0
 showTicks = False
@@ -59,7 +60,6 @@ shapesX = []
 shapesY = []
 bChangedX = []
 bChangedY = []
-shapesGrav = []
 shapesBounded = []
 shapeGrabbed = []
 
@@ -73,8 +73,6 @@ for i in range(shapes): shapesX.append(initX + randint((30 * i), (30 * i) + 10))
 for i in range(shapes): bChangedX.append(0); bChangedY.append(0)#bChangedX.append(randint(minShapesSpeed, maxShapesSpeed)); bChangedY.append(randint(minShapesSpeed, maxShapesSpeed))
 
 for i in range(shapes): shapesColor.append(genColor())
-
-for i in range(shapes): shapesGrav.append(True)
 
 for i in range(shapes): shapesBounded.append(True)
 
@@ -146,10 +144,6 @@ while running:
     if isFirstMousebound: shapesX[0] = mouseX
     if isFirstMousebound: shapesY[0] = mouseY
 
-    for i in range(shapes):
-        if shapesGrav[i]:
-            bChangedY[i] += gravity
-
     #shapes movement
     for i in range(shapes):
         shapesX[i] += bChangedX[i]
@@ -168,14 +162,13 @@ while running:
         if shapesBounded[i]:
             if shapesY[i] <= 0 + shapesRadius[i]:
                 shapesY[i] = 0 + shapesRadius[i]
-                if mouseIsGrabbing and shapeGrabbed[i]: print(f'found collison with ceiling at {shapesX[i]}, {shapesY[i]}!')
+                #if mouseIsGrabbing and shapeGrabbed[i]: print(f'found collison with ceiling at {shapesX[i]}, {shapesY[i]}!')
             elif shapesY[i] > windratio[1] - shapesRadius[i]:
                 shapesY[i] = windratio[1] - shapesRadius[i]
 
         # XY mouse grabbing
         if mouseIsGrabbing:
-            if isWithinRange(mouseX, mouseY, shapesX[i], shapesY[i], 10 + extraMouseRange): shapesGrav[i] = False; shapesX[i] = mouseX; shapesY[i] = mouseY; shapeGrabbed[i] = True
-            else: shapesGrav[i] = True; shapeGrabbed[i] = False
+            if isWithinRange(mouseX, mouseY, shapesX[i], shapesY[i], 10 + extraMouseRange): shapesX[i] = mouseX; shapesY[i] = mouseY; shapeGrabbed[i] = True
 
     for i in range(shapes):
         if mouseIsGrabbing and shapeGrabbed[i]: showShapePos(0, 70, shapesX[i], shapesY[i], i)
@@ -183,12 +176,21 @@ while running:
 
     for i in range(shapes):
         #break
-        if i != limitmax(i + 1, shapes - 1):
+        if i != limitminmax(i + 1, 0, shapes - 1):
             if isWithinRange(shapesX[i], shapesY[i], shapesX[i + 1], shapesY[i + 1], shapesRadius[i]):
-                shapesX[i + 1] = shapesX[i + 1] + shapesRadius[i + 1]
-        if i != limitmin(i - 1, shapes - 1):
-            if isWithinRange(shapesX[i], shapesY[i], shapesX[i - 1], shapesY[i - 1], shapesRadius[i]):
-                shapesY[i - 1] = shapesY[i - 1] - shapesRadius[i - 1]
+                if shapesX[i] > shapesX[i + 1]: shapesX[i + 1] = (shapesX[i + 1] + shapesRadius[i + 1]) + 10
+                elif shapesX[i] < shapesX[i + 1]: shapesX[i + 1] = (shapesX[i + 1] - shapesRadius[i + 1]) - 10
+
+                if shapesY[i] > shapesY[i + 1]: shapesY[i - 1] = (shapesY[i - 1] + shapesRadius[i - 1]) + 10
+                elif shapesY[i] < shapesY[i + 1]: shapesY[i - 1] = (shapesY[i - 1] - shapesRadius[i - 1]) - 10
+
+            elif isWithinRange(shapesX[i], shapesY[i], shapesX[i - 1], shapesY[i - 1], shapesRadius[i]):
+                
+                if shapesX[i] > shapesX[i - 1]: shapesX[i - 1] = (shapesX[i - 1] + shapesRadius[i - 1]) + 10
+                elif shapesX[i] < shapesX[i - 1]: shapesX[i - 1] = (shapesX[i - 1] - shapesRadius[i - 1]) - 10
+
+                if shapesY[i] > shapesY[i - 1]: shapesY[i - 1] = (shapesY[i - 1] + shapesRadius[i - 1]) + 10
+                elif shapesY[i] < shapesY[i - 1]: shapesY[i - 1] = (shapesY[i - 1] - shapesRadius[i - 1]) - 10
 
 
     for i in range(shapes): drawshapes(shapesX[i], shapesY[i], shapesColor[i])

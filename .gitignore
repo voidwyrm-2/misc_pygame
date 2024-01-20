@@ -155,3 +155,4 @@ cython_debug/
 .DS_Store
 PySearcher.py
 *.zip
+builds/
