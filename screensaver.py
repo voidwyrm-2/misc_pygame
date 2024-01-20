@@ -6,7 +6,6 @@ from random import randint
 
 
 
-
 # initialize game
 pygame.init()
 
