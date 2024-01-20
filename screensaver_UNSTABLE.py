@@ -1,6 +1,3 @@
-# Pong game using python pygame
-# Created by Nuclear Pasta
-
 import pygame
 from random import randint
 import math

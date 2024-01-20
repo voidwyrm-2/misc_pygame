@@ -1,6 +1,3 @@
-# Pong game using python pygame
-# Created by Nuclear Pasta
-
 import pygame
 from random import randint
 
@@ -38,6 +35,7 @@ canGoLowerThanStart = False
 shapeDupeRollLength = 100
 shapeDupeChance = 40
 shapeCap = 60
+haveLife = True
 shapeLife = 100
 shapeLifeInc = shapeLife
 oneRadius = False
@@ -88,7 +86,8 @@ def genColor(): return (randint(10, 255), randint(10, 255), randint(10, 255))
 
 def dupeshape(X, Y, speedX, speedY, color):
     global shapes
-    if shapes >= shapeCap: return
+    if shapeCap != None:
+        if shapes >= shapeCap: return
     shapesX.append(X)
     shapesY.append(Y)
     bChangedX.append(speedX)
@@ -210,7 +209,8 @@ while running:
     clock.tick(60)
 
     if canMultiply:
-        if gameticks == shapeLifeInc: delshape(); shapeLifeInc += shapeLife
+        if haveLife:
+            if gameticks == shapeLifeInc: delshape(); shapeLifeInc += shapeLife
 
     if showTicks: showticks(0, 0)
     pygame.display.update()
