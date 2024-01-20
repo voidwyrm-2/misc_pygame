@@ -33,6 +33,13 @@ shapesPoly = 0
 #1.2 or frsquares: funnier squares
 #2 or hexagons: hexagons are the bestagons
 
+canMultiply = False
+canGoLowerThanStart = False
+shapeDupeRollLength = 100
+shapeDupeChance = 40
+shapeCap = 60
+shapeLife = 100
+shapeLifeInc = shapeLife
 oneRadius = False
 defRadius = 10
 minRadius = 5
@@ -42,7 +49,8 @@ maxRadius = 20
 
 initX = 20
 initY = 20
-shapes = 30
+initShapes = 30
+shapes = initShapes
 shapesRadius = []
 
 # defining our shapes
@@ -75,6 +83,32 @@ for i in range(shapes): shapesColor.append((randint(10, 255), randint(10, 255), 
 for i in range(shapes):
     if oneRadius: shapesRadius.append(defRadius)
     else: shapesRadius.append(randint(minRadius, maxRadius))
+
+def genColor(): return (randint(10, 255), randint(10, 255), randint(10, 255))
+
+def dupeshape(X, Y, speedX, speedY, color):
+    global shapes
+    if shapes >= shapeCap: return
+    shapesX.append(X)
+    shapesY.append(Y)
+    bChangedX.append(speedX)
+    bChangedY.append(speedY)
+    shapesColor.append(color)
+    if oneRadius: shapesRadius.append(defRadius)
+    else: shapesRadius.append(randint(minRadius, maxRadius))
+    shapes += 1
+
+def delshape():
+    global shapes
+    if shapes <= 2 and canGoLowerThanStart: return
+    if shapes <= initShapes and not canGoLowerThanStart: return
+    del shapesX[0]
+    del shapesY[0]
+    del bChangedX[0]
+    del bChangedY[0]
+    del shapesColor[0]
+    del shapesRadius[0]
+    shapes -= 1
 
 
 def showticks(x, y):
@@ -109,39 +143,74 @@ while running:
             if '-' in str(bChangedX[i]):
                 #print(f'found "-" in "{str(bChangedX[i])}"')
                 bChangedX[i] = randint(minShapesSpeed, maxShapesSpeed)
+                if canMultiply:
+                    dupeRoll = randint(0, shapeDupeRollLength)
+                    print(f'rolled {dupeRoll} out of {shapeDupeChance}!')
+                    if dupeRoll > shapeDupeChance: dupeshape(shapesX[i], shapesY[i], randint(minShapesSpeed, maxShapesSpeed), randint(minShapesSpeed, maxShapesSpeed), genColor())
             else:
                 #print(f'didn\'t find "-" in "{str(bChangedX[i])}"')
                 bChangedX[i] = -(randint(minShapesSpeed, maxShapesSpeed))
+                if canMultiply:
+                    dupeRoll = randint(0, shapeDupeRollLength)
+                    print(f'rolled {dupeRoll} out of {shapeDupeChance}!')
+                    if dupeRoll > shapeDupeChance: dupeshape(shapesX[i], shapesY[i], -randint(minShapesSpeed, maxShapesSpeed), randint(minShapesSpeed, maxShapesSpeed), genColor())
 
         elif shapesX[i] >= windratio[0] - shapesRadius[i]:
             shapesX[i] = windratio[0] - shapesRadius[i]
             if '-' in str(bChangedX[i]):
                 #print(f'found "-" in "{str(bChangedX[i])}"')
                 bChangedX[i] = randint(minShapesSpeed, maxShapesSpeed)
+                if canMultiply:
+                    dupeRoll = randint(0, shapeDupeRollLength)
+                    print(f'rolled {dupeRoll} out of {shapeDupeChance}!')
+                    if dupeRoll > shapeDupeChance: dupeshape(shapesX[i], shapesY[i], randint(minShapesSpeed, maxShapesSpeed), randint(minShapesSpeed, maxShapesSpeed), genColor())
             else:
                 #print(f'didn\'t find "-" in "{str(bChangedX[i])}"')
                 bChangedX[i] = -(randint(minShapesSpeed, maxShapesSpeed))
+                if canMultiply:
+                    dupeRoll = randint(0, shapeDupeRollLength)
+                    print(f'rolled {dupeRoll} out of {shapeDupeChance}!')
+                    if dupeRoll > shapeDupeChance: dupeshape(shapesX[i], shapesY[i], -randint(minShapesSpeed, maxShapesSpeed), randint(minShapesSpeed, maxShapesSpeed), genColor())
     
         if shapesY[i] <= 0 + shapesRadius[i]:
             shapesY[i] = 0 + shapesRadius[i]
             if '-' in str(bChangedY[i]):
                 #print(f'found "-" in "{str(bChangedY[i])}"')
                 bChangedY[i] = randint(minShapesSpeed, maxShapesSpeed)
+                if canMultiply:
+                    dupeRoll = randint(0, shapeDupeRollLength)
+                    print(f'rolled {dupeRoll} out of {shapeDupeChance}!')
+                    if dupeRoll > shapeDupeChance: dupeshape(shapesX[i], shapesY[i], randint(minShapesSpeed, maxShapesSpeed), randint(minShapesSpeed, maxShapesSpeed), genColor())
             else:
                 #print(f'didn\'t find "-" in "{str(bChangedY[i])}"')
                 bChangedY[i] = -(randint(minShapesSpeed, maxShapesSpeed))
+                if canMultiply:
+                    dupeRoll = randint(0, shapeDupeRollLength)
+                    print(f'rolled {dupeRoll} out of {shapeDupeChance}!')
+                    if dupeRoll > shapeDupeChance: dupeshape(shapesX[i], shapesY[i], -randint(minShapesSpeed, maxShapesSpeed), randint(minShapesSpeed, maxShapesSpeed), genColor())
         elif shapesY[i] >= windratio[1] - shapesRadius[i]:
             shapesY[i] = windratio[1] - shapesRadius[i]
             if '-' in str(bChangedY[i]):
                 #print(f'found "-" in "{str(bChangedY[i])}"')
                 bChangedY[i] = randint(minShapesSpeed, maxShapesSpeed)
+                if canMultiply:
+                    dupeRoll = randint(0, shapeDupeRollLength)
+                    print(f'rolled {dupeRoll} out of {shapeDupeChance}!')
+                    if dupeRoll > shapeDupeChance: dupeshape(shapesX[i], shapesY[i], randint(minShapesSpeed, maxShapesSpeed), randint(minShapesSpeed, maxShapesSpeed), genColor())
             else:
                 #print(f'didn\'t find "-" in "{str(bChangedY[i])}"')
                 bChangedY[i] = -(randint(minShapesSpeed, maxShapesSpeed))
+                if canMultiply:
+                    dupeRoll = randint(0, shapeDupeRollLength)
+                    print(f'rolled {dupeRoll} out of {shapeDupeChance}!')
+                    if dupeRoll > shapeDupeChance: dupeshape(shapesX[i], shapesY[i], -randint(minShapesSpeed, maxShapesSpeed), randint(minShapesSpeed, maxShapesSpeed), genColor())
 
     for i in range(shapes): drawshapes(shapesX[i], shapesY[i], shapesColor[i])
 
     clock.tick(60)
+
+    if canMultiply:
+        if gameticks == shapeLifeInc: delshape(); shapeLifeInc += shapeLife
 
     if showTicks: showticks(0, 0)
     pygame.display.update()
