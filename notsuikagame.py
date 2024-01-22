@@ -95,6 +95,32 @@ def dupeshape(X, Y, speedX, speedY, color):
     else: shapesRadius.append(randint(minRadius, maxRadius))
     shapes += 1
 
+def suikaDupeShape(X, Y, color, radius):
+    global shapes
+    shapesX.append(X)
+    shapesY.append(Y)
+    #bChangedX.append(speedX)
+    #bChangedY.append(speedY)
+    shapesColor.append(color)
+    shapesRadius.append(radius)
+    shapes += 1
+
+def delshape(index: int):
+    global shapes
+    del shapesX[index]
+    del shapesY[index]
+    del bChangedX[index]
+    del bChangedY[index]
+    del shapesColor[index]
+    del shapesRadius[index]
+    shapes -= 1
+
+def combineShapes(iShapeFrom: int, iShapeTo: int):
+    iSF = iShapeFrom
+    iST = iShapeTo
+    delshape(iSF)
+    delshape(iST - 1)
+    suikaDupeShape(shapesX[iSF], shapesY[iSF], (combine(shapesColor[iSF][0], shapesColor[iST][0]), combine(shapesColor[iSF][1], shapesColor[iST][1]), combine(shapesColor[iSF][2], shapesColor[iST][2])), shapesRadius[iSF] + shapesRadius[iST])
 
 def showticks(x, y):
     tick = mainfont.render(f'tick:{gameticks}', True, (255, 255, 255))
@@ -175,22 +201,16 @@ while running:
             #print(f'found collison with floor at !')
 
     for i in range(shapes):
-        #break
-        if i != limitminmax(i + 1, 0, shapes - 1):
-            if isWithinRange(shapesX[i], shapesY[i], shapesX[i + 1], shapesY[i + 1], shapesRadius[i]):
-                if shapesX[i] > shapesX[i + 1]: shapesX[i + 1] = (shapesX[i + 1] + shapesRadius[i + 1]) + 10
-                elif shapesX[i] < shapesX[i + 1]: shapesX[i + 1] = (shapesX[i + 1] - shapesRadius[i + 1]) - 10
+        if len(shapesX) < shapes or len(shapesY) < shapes or len(shapesRadius) < shapes: break
+        i1 = limitmax(i + 1, shapes - 1)
+        i2 = limitmin(i - 1, 0)
+        print(f'i1: {i1}, lSX: {len(shapesX)}, lSY: {len(shapesY)}, S: {shapes}')
+        print(f'i2: {i2}, lSX: {len(shapesX)}, lSY: {len(shapesY)}, S: {shapes}')
+        if isWithinRange(shapesX[i], shapesY[i], shapesX[i1], shapesY[i1], shapesRadius[i]):
+            if shapesRadius[i] == shapesRadius[i1]: combineShapes(i, i1)
 
-                if shapesY[i] > shapesY[i + 1]: shapesY[i + 1] = (shapesY[i + 1] + shapesRadius[i + 1]) + 10
-                elif shapesY[i] < shapesY[i + 1]: shapesY[i + 1] = (shapesY[i + 1] - shapesRadius[i + 1]) - 10
-
-            elif isWithinRange(shapesX[i], shapesY[i], shapesX[i - 1], shapesY[i - 1], shapesRadius[i]):
-                
-                if shapesX[i] > shapesX[i - 1]: shapesX[i - 1] = (shapesX[i - 1] + shapesRadius[i - 1]) + 10
-                elif shapesX[i] < shapesX[i - 1]: shapesX[i - 1] = (shapesX[i - 1] - shapesRadius[i - 1]) - 10
-
-                if shapesY[i] > shapesY[i - 1]: shapesY[i - 1] = (shapesY[i - 1] + shapesRadius[i - 1]) + 10
-                elif shapesY[i] < shapesY[i - 1]: shapesY[i - 1] = (shapesY[i - 1] - shapesRadius[i - 1]) - 10
+        elif isWithinRange(shapesX[i], shapesY[i], shapesX[i2], shapesY[i2], shapesRadius[i]):
+            if shapesRadius[i] == shapesRadius[i2]: combineShapes(i, i2)
 
 
     for i in range(shapes): drawshapes(shapesX[i], shapesY[i], shapesColor[i])

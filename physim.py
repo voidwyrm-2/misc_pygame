@@ -183,12 +183,13 @@ while running:
 
     for i in range(shapes):
         #break
-        if i != limitmax(i + 1, shapes - 1):
-            if isWithinRange(shapesX[i], shapesY[i], shapesX[i + 1], shapesY[i + 1], shapesRadius[i]):
-                shapesX[i + 1] = shapesX[i + 1] + shapesRadius[i + 1]
-        if i != limitmin(i - 1, shapes - 1):
-            if isWithinRange(shapesX[i], shapesY[i], shapesX[i - 1], shapesY[i - 1], shapesRadius[i]):
-                shapesY[i - 1] = shapesY[i - 1] - shapesRadius[i - 1]
+        i1 = limitminmax(i + 1, 0, shapes)
+        i2 = limitminmax(i - 1, 0, shapes)
+        if isWithinRange(shapesX[i], shapesY[i], shapesX[i1], shapesY[i1], shapesRadius[i]):
+            shapesX[i1] = shapesX[i1] + shapesRadius[i1]
+
+        if isWithinRange(shapesX[i], shapesY[i], shapesX[i2], shapesY[i2], shapesRadius[i]):
+            shapesY[i2] = shapesY[i2] - shapesRadius[i2]
 
 
     for i in range(shapes): drawshapes(shapesX[i], shapesY[i], shapesColor[i])

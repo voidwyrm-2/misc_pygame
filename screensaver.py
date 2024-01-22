@@ -23,6 +23,14 @@ mainfont = pygame.font.Font('freesansbold.ttf', 32)
 gameticks = 0
 showTicks = False
 
+canGravity = True
+gravity = 0.1
+minGrav = -0.2
+maxGrav = 0.2
+shapeGravity = []
+
+vectorLines = False
+
 shapesPoly = 0
 #0 or circles
 #1 or squares(NOT WORKING)
@@ -42,12 +50,13 @@ oneRadius = False
 defRadius = 10
 minRadius = 5
 maxRadius = 20
+showRadius = False
 
 # A moment of silence for the era when "shapes" was "balls"
 
 initX = 20
 initY = 20
-initShapes = 30
+initShapes = 100
 shapes = initShapes
 shapesRadius = []
 
@@ -77,6 +86,8 @@ for i in range(shapes): shapesX.append(initX); shapesY.append(initY)
 for i in range(shapes): bChangedX.append(randint(minShapesSpeed, maxShapesSpeed)); bChangedY.append(randint(minShapesSpeed, maxShapesSpeed))
 
 for i in range(shapes): shapesColor.append((randint(10, 255), randint(10, 255), randint(10, 255)))
+
+for i in range(shapes): shapeGravity.append(gravity)
 
 for i in range(shapes):
     if oneRadius: shapesRadius.append(defRadius)
@@ -130,6 +141,10 @@ while running:
         if event.type == pygame.KEYDOWN:
                 #print("you preesed a key")
                 if event.key == pygame.K_ESCAPE or event.key == pygame.K_q: running = False
+
+    if canGravity:
+        for i in range(shapes): bChangedY[i] += shapeGravity[i]
+
 
     #shapes movement
     for i in range(shapes):
@@ -205,6 +220,22 @@ while running:
                     if dupeRoll > shapeDupeChance: dupeshape(shapesX[i], shapesY[i], -randint(minShapesSpeed, maxShapesSpeed), randint(minShapesSpeed, maxShapesSpeed), genColor())
 
     for i in range(shapes): drawshapes(shapesX[i], shapesY[i], shapesColor[i])
+
+    if vectorLines:
+        for i in range(shapes):
+            pygame.draw.line(screen,
+                            (255, 0, 0),
+                            (shapesX[i], shapesY[i]),
+                            (
+                             shapesX[i] + ((bChangedX[i] * 2) * shapesRadius[i]),
+                             shapesY[i] + ((bChangedX[i] * 2) * shapesRadius[i])
+                            ))
+
+    if showRadius:
+        for i in range(shapes):
+            shapefont = pygame.font.Font('freesansbold.ttf', round(shapesRadius[i] - 0.5))
+            shapeSize = shapefont.render(str(shapesRadius[i] * 2), True, (255, 255, 255))
+            screen.blit(shapeSize, (shapesX[i] - (shapesRadius[i] // 2), shapesY[i] - (shapesRadius[i] // 2)))
 
     clock.tick(60)
 

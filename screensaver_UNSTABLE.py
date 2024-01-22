@@ -47,7 +47,7 @@ maxRadius = 20
 
 initX = 20
 initY = 20
-initShapes = 30
+initShapes = 2#30
 shapes = initShapes
 shapesRadius = []
 
@@ -115,7 +115,7 @@ def collicheckX(coX, radius, cindex):
     for i in range(shapes):
         if i != cindex:
             distance = math.sqrt(math.pow(coX - shapesX[i], 2))
-            if distance <= radius: return True
+            if distance < radius: return True
         else: continue
     return False
 
@@ -124,7 +124,7 @@ def collicheckY(coY, radius, cindex):
     for i in range(shapes):
         if i != cindex:
             distance = math.sqrt(math.pow(coY - shapesY[i], 2))
-            if distance <= radius: return True
+            if distance < radius: return True
         else: continue
     return False
 
